@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartChecker - Your Heart Health Companion</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS and Popper.js (Order is important) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+
+</head>
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #e74c3c;">
+        <a class="navbar-brand" href="#"><img src="#" alt="Logo"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openDashboard()">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about" onclick="loadContent('about.html')">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact" onclick="loadContent('contact.html')">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+<div class="main-section">
+    <div class="cta-section" id="cta">
+        <h2>Monitor Your Heart</h2>
+        <p>Check your heart health regularly with HeartChecker.</p>
+        <a class="cta-button" href="#dashboard" onclick="openDashboard()">Start Monitoring</a>
+    </div>
+
+    <div class="key-features-section" id="key-features">
+        <h2>Key Features</h2>
+        <div class="row" id="feature-cards-container">
+            <!-- Key feature cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <div class="contact-form" id="contact">
+        <h2>Contact Us</h2>
+        <form>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="query">Your Query:</label>
+                <textarea id="query" name="query" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>Contact us at: contact@heartchecker.com</p>
+</footer>
+
+<!-- Modal Script -->
+<div id="dashboardModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeDashboardModal()">&times;</span>
+        <iframe id="dashboardIframe" src="" style="width: 100%; height: 500px;"></iframe>
+    </div>
+</div>
+
+<script>
+    function openDashboard() {
+        document.getElementById('dashboardModal').style.display = 'block';
+        document.getElementById('dashboardIframe').src = 'dashboard.html';
+        document.body.classList.add('inactive');
+    }
+
+    function closeDashboardModal() {
+        document.getElementById('dashboardModal').style.display = 'none';
+        document.getElementById('dashboardIframe').src = '';
+        document.body.classList.remove('inactive');
+    }
+
+    function loadContent(page) {
+        document.getElementById('main-iframe').src = page;
+    }
+</script>
+
+<script>
+    // Function to create a key feature card
+    function createFeatureCard(heading, subHeading) {
+        const cardContainer = document.getElementById('feature-cards-container');
+
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'col-md-6'; // Set to col-md-6 for two cards per row on medium-sized screens
+
+        const card = document.createElement('div');
+        card.className = 'key-feature-card';
+
+        const cardHeading = document.createElement('h3');
+        cardHeading.textContent = heading;
+
+        const cardSubHeading = document.createElement('p');
+        cardSubHeading.textContent = subHeading;
+
+        card.appendChild(cardHeading);
+        card.appendChild(cardSubHeading);
+
+        cardDiv.appendChild(card);
+        cardContainer.appendChild(cardDiv);
+    }
+
+    // Sample key feature data (you can replace this with your actual data)
+    const featuresData = [
+        { heading: 'Predictive Analysis', subHeading: 'Get accurate predictions about your heart health based on advanced algorithms and data analysis.' },
+        { heading: 'User-Friendly Interface', subHeading: 'Enjoy a seamless and intuitive user experience with our easy-to-navigate interface.' },
+        { heading: 'Personalized Insights', subHeading: 'Receive personalized insights and recommendations tailored to your specific heart health needs.' },
+        { heading: 'Real-Time Monitoring', subHeading: 'Monitor your heart health in real-time and receive instant notifications for any abnormalities.' }
+    ];
+
+    // Create key feature cards using the sample
+
+    featuresData.forEach(feature => {
+        createFeatureCard(feature.heading, feature.subHeading);
+    });
+</script>
+</body>
+</html>
