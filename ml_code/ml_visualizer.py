@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve, auc
+
 
 class MLVisualizer:
     @staticmethod
