@@ -12,10 +12,13 @@ from ml_code.ml_visualizer import MLVisualizer
 
 app = Flask(__name__)
 
-
+# Load and preprocess the dataset
+ml_instance = MLManager("/Users/trinadhreddy/Downloads/heart.csv")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    global ml_instance  # Define ml_instance in the scope of the function
+
     if request.method == 'POST':
         # Process user input and interact with the MLManager class
         user_input = {
@@ -26,14 +29,20 @@ def index():
         predictions = ml_instance.predict(user_input)
         probability = ml_instance.predict_proba(user_input)
         deviations = ml_instance.calculate_attribute_deviations(
-            pd.DataFrame(user_input, columns=ml_instance.model.feature_names))
+            pd.DataFrame(user_input, columns=ml_instance.feature_names))
         return render_template('result.html', predictions=predictions, probability=probability,
                                deviations=deviations)
     return render_template('index.html')
+@app.route('/checkyourheart')
+def checkyourheart():
+
+    return render_template('checkyourheart.html')
 
 @app.route('/dashboard')
 def dashboard():
-    # Process data for dashboard and interact with the MLManager class
+    global ml_instance  # Define ml_instance in the scope of the function
+
+    # Process data for the dashboard and interact with the MLManager class
     features_test = ml_instance.df.drop('target', axis=1)
     target_test = ml_instance.df['target']
     X_train, X_test, y_train, y_test = train_test_split(features_test, target_test, test_size=0.2,
@@ -51,8 +60,5 @@ def dashboard():
 
     return render_template('dashboard.html', img_str=img_str)
 
-
 if __name__ == '__main__':
-    # Load and preprocess the dataset
-    ml_instance = MLManager("/Users/trinadhreddy/Downloads/heart.csv")
     app.run(debug=True)
