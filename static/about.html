@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About HeartChecker</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+
+   <style>
+    /* Add your custom styles here */
+    body {
+        padding: 20px;
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+    }
+
+    .main-section {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 100%;
+    }
+
+    .about-section {
+        margin-bottom: 30px;
+    }
+
+    .about-section h2 {
+        color: #e74c3c;
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+
+    .about-section p {
+        line-height: 1.6;
+        color: #555;
+    }
+
+    h3, h4 {
+        color: #e74c3c;
+        margin-top: 20px;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    ul li {
+        margin-bottom: 10px;
+    }
+
+    .developer-section {
+
+        margin: 50px 0px; /* Elevated position */
+    }
+
+    .profile-card {
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        max-width:100%;
+        overflow: hidden;
+        margin: 40px 0px;
+        position : relative;
+        float: left; /* Float the card to the left */
+        margin-right: 10px; /* Add margin to separate it from the content */
+    }
+    .profile-card h2 {
+        color: #e74c3c;
+        font-size: 2em;
+        margin: 20px 40px;
+    }
+    .profile-card img {
+        border-radius: 5%;
+        max-width: 30%;
+        max-height : 40%;
+        float: left;
+        margin: 40px 40px;
+    }
+
+    .profile-section h3 {
+        color: #e74c3c;
+        text-align: center;
+        font-size: 1.5em;
+        margin-top: 40px;
+    }
+
+    .profile-section p {
+        color: #555;
+        margin: 20px;
+    }
+               .profile-section a:hover {
+            text-decoration: underline;
+        }
+         .profile-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-links a {
+            color: #e74c3c;
+            margin: 0 10px;
+            font-size: 1.2em;
+            text-decoration: none;
+        }
+        .profile-links a:hover {
+            text-decoration: underline;
+        }
+</style>
+
+</head>
+
+<body>
+    <!-- About Section -->
+    <div class="main-section">
+        <div class="about-section" id="about">
+            <h2>HeartChecker: Nurturing Heart Health Through Technology</h2>
+            <p>HeartChecker, an innovative project, is dedicated to revolutionizing the way individuals monitor and manage their heart health. In a world where proactive health measures are becoming increasingly crucial, HeartChecker stands out as a comprehensive and user-friendly solution.</p>
+
+            <h3>Technological Foundation</h3>
+            <p>HeartChecker is built on a robust technological foundation, employing state-of-the-art tools and frameworks to deliver accurate predictions and personalized insights. The application utilizes a combination of web technologies, data analytics, and machine learning to empower users in understanding and caring for their cardiovascular well-being.</p>
+
+            <h4>Technologies Used</h4>
+            <ul>
+                <li><strong>Web Technologies:</strong> HTML, CSS, JavaScript, Flask</li>
+                <li><strong>Data Analytics:</strong> Advanced algorithms, Data visualization</li>
+                <li><strong>Machine Learning:</strong> Predictive models</li>
+                <li><strong>Database Management:</strong> SQLite or MongoDB</li>
+            </ul>
+
+            <!-- Add more content as needed -->
+
+            <h3>Key Features</h3>
+            <!-- List key features here -->
+
+            <h4>1. Predictive Analysis</h4>
+            <p>HeartChecker's predictive analysis is at the forefront of its capabilities. Through the amalgamation of machine learning models and user-provided health data, the application generates accurate predictions about an individual's heart health. This feature not only provides valuable insights but also enables users to take proactive measures.</p>
+
+            <h4>2. User-Friendly Interface</h4>
+            <p>The user interface of HeartChecker is designed with simplicity and intuitiveness in mind. Users can easily navigate through the application, input health data, and interpret results. The goal is to make heart health monitoring accessible to users of all technological backgrounds.</p>
+
+            <!-- Add more features as needed -->
+
+            <h3>Future Scope</h3>
+            <!-- List future scope and improvements here -->
+
+            <h4>1. Integration with Wearable Devices</h4>
+            <p>Future versions of HeartChecker could seamlessly integrate with wearable devices to collect real-time health data. This integration would enhance the accuracy of predictions and provide continuous monitoring.</p>
+
+            <h4>2. Telehealth Features</h4>
+            <p>Incorporating telehealth features, such as virtual consultations with healthcare professionals, would elevate HeartChecker to a comprehensive healthcare platform. Users could seek guidance and clarification based on the insights provided by the application.</p>
+        </div>
+
+        <!-- Developer Section -->
+        <div class="developer-section">
+            <!-- Developer Profile Section -->
+            <div class="profile-card">
+                <h2>Developed by</h2>
+                <img src="dev.jpg" alt="Developer's Profile Picture">
+                <div class="profile-section">
+                    <h3>Trinadhreddy Seelam</h3>
+                    <p> Greetings! I am Trinadhreddy Seelam, a diligent graduate student currently pursuing a Master's in Computer Science at the University of Massachusetts Boston. With a solid foundation as a Data Engineer at Futurense Technologies, where I delivered specialized services to OPTUM, I am now actively seeking internship opportunities to apply and enhance my expertise.<br><br>
+
+During my tenure at OPTUM, I played a pivotal role in significant projects, including the seamless migration of data from Teradata to Snowflake and the transition from DataStage to PySpark, all executed within an Agile framework. My responsibilities covered the development and maintenance of data integration processes, implementation of data models, ETL processes, and data pipelines for the Data Warehouse.<br><br>
+
+
+Proficient in Python, SQL, Java, and C, my technical expertise spans a comprehensive suite of tools and technologies, including MySQL, PySpark, UNIX shell scripting, Airflow, Hive, Sqoop, Snowflake, Teradata, Kafka, Hadoop, Datastage, Informatica, Flask, Power BI, Github, AWS, and Azure. I have practical experience in data loading, automation, and data comparison leveraging tools such as SnowSQL, shell scripting, and azcopy utility.<br><br>
+
+A graduate of Rajiv Gandhi University of Knowledge Technologies with a Bachelor's degree in Computer Science and Engineering, I maintained an exemplary academic record, boasting a CGPA of 8.9.</p>
+                    <!-- Add more developer information as needed -->
+                     <div class="profile-links">
+                        <a href="mailto:trinadhreddysee@gmail.com" target="_blank">Email</a>
+                        <a href="https://www.linkedin.com/in/trinadhreddyseelam/" target="_blank">LinkedIn</a>
+                        <a href="https://github.com/Trinadhreddy1184" target="_blank">GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add more developer profiles if needed -->
+        </div>
+    </div>
+
+    <!-- Modal Script -->
+    <!-- Include modal scripts if any -->
+
+    <script>
+        // Add your custom scripts here
+    </script>
+
+</body>
+
+</html>

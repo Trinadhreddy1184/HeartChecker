@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartChecker - Result</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS and Popper.js (Order is important) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='result.css') }}">
+</head>
+<body>
+
+<div class="main-section">
+    <div class="result-container">
+        <h2>HeartChecker Result</h2>
+        <p>Your submitted information:</p>
+        <ul>
+            <li><strong>Age:</strong> {{ age }}</li>
+            <li><strong>Sex:</strong> {% if sex == 0 %} Female {% else %} Male {% endif %}</li>
+            <li><strong>Chest Pain Type:</strong> {{ cp }}</li>
+            <li><strong>Resting Blood Pressure:</strong> {{ trestbps }}</li>
+            <li><strong>Serum Cholestoral:</strong> {{ chol }}</li>
+            <li><strong>Fasting Blood Sugar:</strong> {{ fbs }}</li>
+            <li><strong>Resting Electrocardiographic Results:</strong> {{ restecg }}</li>
+            <li><strong>Maximum Heart Rate Achieved:</strong> {{ thalach }}</li>
+            <li><strong>Exercise Induced Angina:</strong> {{ exang }}</li>
+            <li><strong>Oldpeak (ST Depression):</strong> {{ oldpeak }}</li>
+            <li><strong>Slope of the Peak Exercise ST Segment:</strong> {{ slope }}</li>
+            <li><strong>Number of Major Vessels:</strong> {{ num_major_vessels }}</li>
+            <li><strong>Thal:</strong> {% if thal == 0 %} Normal {% elif thal == 1 %} Fixed Defect {% else %} Reversible Defect {% endif %}</li>
+        </ul>
+    </div>
+</div>
+
+
+</body>
+</html>
