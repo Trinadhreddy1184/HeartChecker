@@ -1,43 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeartChecker - Your Heart Health </title>
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>HeartChecker - Your Heart Health Companion</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Bootstrap JS and Popper.js (Order is important) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS and Popper.js (Order is important) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 
 </head>
+
 <body>
 
-<div class="main-section">
-    <div class="contact-form" id="contact">
-        <h2>Check Your Heart's Health</h2>
-        <form>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="query">Your Query:</label>
-                <textarea id="query" name="query" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit">Submit</button>
-            </div>
-        </form>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #e74c3c;">
+        <a class="navbar-brand" href="#"><img src="#" alt="Logo"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openDashboard()">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about" onclick="loadContent('about.html')">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact" onclick="loadContent('contact.html')">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-section">
+        <div class="contact-form" id="contact">
+            <h2>Check Your Heart's Health</h2>
+            <form method="post" action="/" onsubmit="displaySubmittedInfo();">
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="text" class="form-control" id="age" name="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="sex">Sex:</label>
+                    <select class="form-control" id="sex" name="sex" required>
+                        <option value="0">Female</option>
+                        <option value="1">Male</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="chest_pain">Chest Pain Type:</label>
+                    <select class="form-control" id="chest_pain" name="chest_pain" required>
+                        <option value="0">Type 0</option>
+                        <option value="1">Type 1</option>
+                        <option value="2">Type 2</option>
+                        <option value="3">Type 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="resting_bp">Resting Blood Pressure:</label>
+                    <input type="text" class="form-control" id="resting_bp" name="resting_bp" required>
+                </div>
+                <div class="form-group">
+                    <label for="cholesterol">Serum Cholestoral (mg/dl):</label>
+                    <input type="text" class="form-control" id="cholesterol" name="cholesterol" required>
+                </div>
+                <div class="form-group">
+                    <label for="fasting_blood_sugar">Fasting Blood Sugar > 120 mg/dl:</label>
+                    <select class="form-control" id="fasting_blood_sugar" name="fasting_blood_sugar" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="resting_ecg">Resting Electrocardiographic Results:</label>
+                    <select class="form-control" id="resting_ecg" name="resting_ecg" required>
+                        <option value="0">Value 0</option>
+                        <option value="1">Value 1</option>
+                        <option value="2">Value 2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="max_heart_rate">Maximum Heart Rate Achieved:</label>
+                    <input type="text" class="form-control" id="max_heart_rate" name="max_heart_rate" required>
+                </div>
+                <div class="form-group">
+                    <label for="exercise_angina">Exercise Induced Angina:</label>
+                    <select class="form-control" id="exercise_angina" name="exercise_angina" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="oldpeak">Oldpeak (ST Depression):</label>
+                    <input type="text" class="form-control" id="oldpeak" name="oldpeak" required>
+                </div>
+                <div class="form-group">
+                    <label for="slope">Slope of Peak Exercise ST Segment:</label>
+                    <input type="text" class="form-control" id="slope" name="slope" required>
+                </div>
+                <div class="form-group">
+                    <label for="num_vessels">Number of Major Vessels Colored by Flourosopy (0-3):</label>
+                    <input type="text" class="form-control" id="num_vessels" name="num_vessels" required>
+                </div>
+                <div class="form-group">
+                    <label for="thal">Thal:</label>
+                    <select class="form-control" id="thal" name="thal" required>
+                        <option value="0">Normal</option>
+                        <option value="1">Fixed Defect</option>
+                        <option value="2">Reversible Defect</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<footer>
-    <p>Contact us at: contact@heartchecker.com</p>
-</footer>
+    <footer>
+        <p>Contact us at: contact@heartchecker.com</p>
+    </footer>
 
+    <!-- Modal Script -->
+    <div id="submittedInfoModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Submitted Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="submittedInfoIframe" src="" style="width: 100%; height: 300px;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function displaySubmittedInfo() {
+            // Fetch and display submitted information in modal iframe
+            var submittedInfo = "Submitted Information:\n\n";
+            submittedInfo += "Age: " + document.getElementById('age').value + "\n";
+            submittedInfo += "Sex: " + (document.getElementById('sex').value === '0' ? 'Female' : 'Male') + "\n";
+            submittedInfo += "Chest Pain Type: " + document.getElementById('chest_pain').value + "\n";
+            submittedInfo += "Resting Blood Pressure: " + document.getElementById('resting_bp').value + "\n";
+            submittedInfo += "Serum Cholestoral (mg/dl): " + document.getElementById('cholesterol').value + "\n";
+            submittedInfo += "Fasting Blood Sugar > 120 mg/dl: " + (document.getElementById('fasting_blood_sugar').value === '0' ? 'No' : 'Yes') + "\n";
+            submittedInfo += "Resting Electrocardiographic Results: " + document.getElementById('resting_ecg').value + "\n";
+            submittedInfo += "Maximum Heart Rate Achieved: " + document.getElementById('max_heart_rate').value + "\n";
+            submittedInfo += "Exercise Induced Angina: " + (document.getElementById('exercise_angina').value === '0' ? 'No' : 'Yes') + "\n";
+            submittedInfo += "Oldpeak (ST Depression): " + document.getElementById('oldpeak').value + "\n";
+            submittedInfo += "Slope of Peak Exercise ST Segment: " + document.getElementById('slope').value + "\n";
+            submittedInfo += "Number of Major Vessels Colored by Flourosopy (0-3): " + document.getElementById('num_vessels').value + "\n";
+            submittedInfo += "Thal: " + (document.getElementById('thal').value === '0' ? 'Normal' : (document.getElementById('thal').value === '1' ? 'Fixed Defect' : 'Reversible Defect')) + "\n";
+
+            document.getElementById('submittedInfoIframe').src = 'data:text/html;charset=utf-8,' + encodeURIComponent(submittedInfo);
+
+            // Show the modal
+            var modal = new bootstrap.Modal(document.getElementById('submittedInfoModal'));
+            modal.show();
+        }
+    </script>
 
 </body>
+
 </html>
