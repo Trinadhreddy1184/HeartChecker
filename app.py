@@ -13,7 +13,7 @@ from ml_code.ml_visualizer import MLVisualizer
 app = Flask(__name__)
 
 # Load and preprocess the dataset
-ml_instance = MLManager("static/heart.csv")
+#ml_instance = MLManager("static/heart.csv")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -64,8 +64,9 @@ def result():
             'thal': int(request.form['thal'])
         }
 
-
+        #write ml implementation
         # Render the result template with user input and predictions
+
         return render_template('result.html', age=user_input['age'], sex=user_input['sex'],
                                 cp=user_input['cp'], trestbps=user_input['trestbps'],
                                 chol=user_input['chol'], fbs=user_input['fbs'],
