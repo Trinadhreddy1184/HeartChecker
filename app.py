@@ -9,11 +9,12 @@ from io import BytesIO
 
 from ml_code.ml_manager import MLManager
 from ml_code.ml_visualizer import MLVisualizer
+import  numpy as np
 
 app = Flask(__name__)
 
 # Load and preprocess the dataset
-#ml_instance = MLManager("static/heart.csv")
+ml_instance = MLManager("static/heart.csv")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -61,11 +62,31 @@ def result():
             'oldpeak': float(request.form['oldpeak']),
             'slope': int(request.form['slope']),
             'num_major_vessels': int(request.form['num_major_vessels']),
-            'thal': int(request.form['thal'])
+            'thal': int(request.form['thal']),
+            'target': None
         }
+        user_input_array = np.array(list(user_input.values())).reshape(1, -1)
 
+        # Call the predict method with the numpy array
+        prediction = ml_instance.predict(user_input_array)
+        print(prediction)
+        usr_probability = ml_instance.predict_proba(user_input_array)
+        print(usr_probability)
         #write ml implementation
         # Render the result template with user input and predictions
+        features_test = ml_instance.df.drop('target', axis=1)
+        target_test = ml_instance.df['target']
+        #X_train, X_test, y_train, y_test = train_test_split(features_test, target_test, test_size=0.2, random_state=10)
+        #predictions = ml_instance.predict(X_test)
+        #print(predictions)
+        #print(ml_instance.predict(user_input))
+        #probability = ml_instance.predict_proba(X_test)
+        #usr_probability = ml_instance.predict_proba(user_input)
+        #print(usr_probability)
+        #print(probability)
+
+
+
 
         return render_template('result.html', age=user_input['age'], sex=user_input['sex'],
                                 cp=user_input['cp'], trestbps=user_input['trestbps'],
