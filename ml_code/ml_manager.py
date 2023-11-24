@@ -32,23 +32,23 @@ class MLManager:
         features = self.df.drop('target', axis=1)
         target = self.df['target']
         model.fit(features, target)
-        MLManager.model = model
+        self.model = model
 
     def predict(self, user_input):
-        if MLManager.model is None:
+        if self.model is None:
             raise ValueError("Model not trained. Call train_model first.")
         user_input_df = pd.DataFrame(user_input, columns=self.feature_names)
         # Exclude the target variable if it exists in the input
         features_for_prediction = user_input_df.drop('target', axis=1, errors='ignore')
-        return MLManager.model.predict(features_for_prediction)
+        return self.model.predict(features_for_prediction)
 
     def predict_proba(self, user_input):
-        if MLManager.model is None:
+        if self.model is None:
             raise ValueError("Model not trained. Call train_model first.")
         user_input_df = pd.DataFrame(user_input, columns=self.feature_names)
         # Exclude the target variable if it exists in the input
         features_for_prediction = user_input_df.drop('target', axis=1, errors='ignore')
-        return MLManager.model.predict_proba(features_for_prediction)[:, 1]
+        return self.model.predict_proba(features_for_prediction)[:, 1]
 
     def calculate_attribute_deviations(self, user_input):
         deviations = {attribute: user_input.get(attribute, 0) - self.normal_values.get(attribute, 0)
