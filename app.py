@@ -68,10 +68,10 @@ def result():
         user_input_array = np.array(list(user_input.values())).reshape(1, -1)
 
         # Call the predict method with the numpy array
-        prediction = ml_instance.predict(user_input_array)
+        prediction = ml_instance.predict(user_input_array)[0]
         print(prediction)
-        usr_probability = ml_instance.predict_proba(user_input_array)
-        print(usr_probability)
+        usr_probability = ml_instance.predict_proba(user_input_array)[0]
+        print(format(usr_probability*100,'.2f'))
         #write ml implementation
         # Render the result template with user input and predictions
         features_test = ml_instance.df.drop('target', axis=1)
