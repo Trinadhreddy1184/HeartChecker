@@ -70,12 +70,17 @@ def result():
         # Call the predict method with the numpy array
         prediction = ml_instance.predict(user_input_array)[0]
         print(prediction)
-        usr_probability = ml_instance.predict_proba(user_input_array)[0]
-        print(format(usr_probability*100,'.2f'))
+        usr_probability = format( ml_instance.predict_proba(user_input_array)[0] * 100,".2f")
+        print(usr_probability)
+        deviations = ml_instance.calculate_attribute_deviations(
+            pd.DataFrame(user_input_array, columns=ml_instance.feature_names))
+        print('Attribute Deviations:')
+        for attribute, deviation in deviations.items():
+            print(f'{attribute}: {str(deviation).split("    ")[1]}')
         #write ml implementation
         # Render the result template with user input and predictions
-        features_test = ml_instance.df.drop('target', axis=1)
-        target_test = ml_instance.df['target']
+        #features_test = ml_instance.df.drop('target', axis=1)
+        #target_test = ml_instance.df['target']
         #X_train, X_test, y_train, y_test = train_test_split(features_test, target_test, test_size=0.2, random_state=10)
         #predictions = ml_instance.predict(X_test)
         #print(predictions)
@@ -88,13 +93,7 @@ def result():
 
 
 
-        return render_template('result.html', age=user_input['age'], sex=user_input['sex'],
-                                cp=user_input['cp'], trestbps=user_input['trestbps'],
-                                chol=user_input['chol'], fbs=user_input['fbs'],
-                                restecg=user_input['restecg'], thalach=user_input['thalach'],
-                                exang=user_input['exang'], oldpeak=user_input['oldpeak'],
-                                slope=user_input['slope'], num_major_vessels=user_input['num_major_vessels'],
-                                thal=user_input['thal'])
+        return render_template('result.html', prediction =prediction,usr_probability=usr_probability)
 
     return "Method not allowed"
 

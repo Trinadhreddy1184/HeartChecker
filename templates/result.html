@@ -16,21 +16,10 @@
 <div class="main-section">
     <div class="result-container">
         <h2>HeartChecker Result</h2>
-        <p>Your submitted information:</p>
+        <p>Your results based on given info:</p>
         <ul>
-            <li><strong>Age:</strong> {{ age }}</li>
-            <li><strong>Sex:</strong> {% if sex == 0 %} Female {% else %} Male {% endif %}</li>
-            <li><strong>Chest Pain Type:</strong> {{ cp }}</li>
-            <li><strong>Resting Blood Pressure:</strong> {{ trestbps }}</li>
-            <li><strong>Serum Cholestoral:</strong> {{ chol }}</li>
-            <li><strong>Fasting Blood Sugar:</strong> {{ fbs }}</li>
-            <li><strong>Resting Electrocardiographic Results:</strong> {{ restecg }}</li>
-            <li><strong>Maximum Heart Rate Achieved:</strong> {{ thalach }}</li>
-            <li><strong>Exercise Induced Angina:</strong> {{ exang }}</li>
-            <li><strong>Oldpeak (ST Depression):</strong> {{ oldpeak }}</li>
-            <li><strong>Slope of the Peak Exercise ST Segment:</strong> {{ slope }}</li>
-            <li><strong>Number of Major Vessels:</strong> {{ num_major_vessels }}</li>
-            <li><strong>Thal:</strong> {% if thal == 0 %} Normal {% elif thal == 1 %} Fixed Defect {% else %} Reversible Defect {% endif %}</li>
+            <li><strong>User Probability to have a heart disease:</strong> {{ usr_probability }}</li>
+            <li><strong>Have a disease:</strong> {% if prediction == 0 %} Not effected {% else %} Effected {% endif %}</li>
         </ul>
     </div>
 </div>
