@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +10,11 @@
     <!-- Bootstrap JS and Popper.js (Order is important) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Plotly CDN -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='result.css') }}">
 </head>
+
 <body>
 
 <div class="main-section">
@@ -18,12 +22,78 @@
         <h2>HeartChecker Result</h2>
         <p>Your results based on given info:</p>
         <ul>
-            <li><strong>User Probability to have a heart disease:</strong> {{ usr_probability }}</li>
-            <li><strong>Have a disease:</strong> {% if prediction == 0 %} Not effected {% else %} Effected {% endif %}</li>
+            <li>
+                <strong>User Probability to have a heart disease:</strong>
+                <div class="progress-container">
+                    <div class="progress" style="width: 70%;height: 10%; margin: auto; border: 1px solid #ddd;">
+                        <div class="progress-bar " role="progressbar" style="width: {{ usr_probability }}%;background-color: {% if usr_probability <= 25 %} #e7bc3c; /* Light Yellow */
+                      {% elif usr_probability <= 50 %} #e7833c; /* Light Orange */
+                      {% elif usr_probability <= 75 %} #e7613c; /* Tomato Orange */
+                      {% else %} #e73c3c; /* Danger Red */
+                      {% endif %};"
+                             aria-valuenow="{{ usr_probability }}" aria-valuemin="0" aria-valuemax="100">
+                            <strong style="color: white; position: relative; top: -0.0em;">{{ usr_probability }}%</strong>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li > <h4 style="color: {% if prediction == 0 %} #3ce73f {% else %} #e7503c {% endif %}"> {% if prediction == 0 %} Not Effected {% else %} Effected {% endif %}</h4></li>
+        </ul>
+
+        <!-- Plotly Bar Chart for Deviations -->
+        <div class="deviations-chart" id="deviations-chart"></div>
+
+        <script>
+            // Extract deviations data from Python dictionary
+            var deviationsData = {{ deviations_dict | tojson | safe }};
+
+            // Create traces for each deviation
+            var traces = [];
+            for (var attribute in deviationsData) {
+                if (deviationsData.hasOwnProperty(attribute)) {
+                    traces.push({
+                        y: [attribute],
+                        x: [deviationsData[attribute]],
+                        type: 'bar',
+                        name: attribute,
+                        orientation: 'h'
+                    });
+                }
+            }
+
+            // Layout for the chart
+            var layout = {
+                title: 'Attribute Deviations',
+                yaxis: {
+                    title: 'Attributes'
+                },
+                xaxis: {
+                    title: 'Deviation'
+                }
+            };
+
+            // Plot the chart
+            Plotly.newPlot('deviations-chart', traces, layout);
+        </script>
+    </div>
+</div>
+
+<div class="classification-section card">
+     <div class="card-header" style="background-color: {% if usr_probability <= 25 %} #e7bc3c; /* Light Yellow */
+                      {% elif usr_probability <= 50 %} #e7833c; /* Light Orange */
+                      {% elif usr_probability <= 75 %} #e7613c; /* Tomato Orange */
+                      {% else %} #e73c3c; /* Danger Red */
+                      {% endif %};"><h3>User Classification: {{ classification }}</h3></div>
+    <div class="card-body">
+        <h4 class="card-title" style="color:#e74d3c;">Do's and Don'ts:</h4>
+        <ul class="list-group list-group-flush">
+            {% for item in dos_and_donts %}
+                <li class="list-group-item">{{ item }}</li>
+            {% endfor %}
         </ul>
     </div>
 </div>
 
-
 </body>
+
 </html>

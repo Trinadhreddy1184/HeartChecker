@@ -1,0 +1,65 @@
+/* result.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+
+.main-section {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    max-width: 100%;
+}
+
+.result-container {
+    text-align: center;
+}
+
+h2 {
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Styling based on the probability value */
+li:first-child {
+    color: [{{ "'rgba(255, 0, 0, 0.7)'" if float(usr_probability) > 0.5 else "'rgba(0, 255, 0, 0.7)'" }}];
+}
+
+/* Additional styling for classification section */
+.classification-section.card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    max-width: 100%;
+}
+
+.card-header {
+    color: #ffffff;
+    border-radius: 10px 10px 0 0;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.list-group-item {
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+/* Add more styling as needed */

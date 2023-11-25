@@ -68,14 +68,17 @@ def result():
         user_input_array = np.array(list(user_input.values())).reshape(1, -1)
 
         # Call the predict method with the numpy array
-        prediction = ml_instance.predict(user_input_array)[0]
+        prediction = int(ml_instance.predict(user_input_array)[0])
         print(prediction)
-        usr_probability = format( ml_instance.predict_proba(user_input_array)[0] * 100,".2f")
+        usr_probability = float(format(float(ml_instance.predict_proba(user_input_array)[0] * 100),".2f"))
         print(usr_probability)
+        print(type(usr_probability))
         deviations = ml_instance.calculate_attribute_deviations(
             pd.DataFrame(user_input_array, columns=ml_instance.feature_names))
         print('Attribute Deviations:')
+        deviations_dict={}
         for attribute, deviation in deviations.items():
+            deviations_dict[attribute]=str(deviation).split("    ")[1].split("\n")[0]
             print(f'{attribute}: {str(deviation).split("    ")[1]}')
         #write ml implementation
         # Render the result template with user input and predictions
@@ -90,10 +93,49 @@ def result():
         #print(usr_probability)
         #print(probability)
 
+            # Determine the user classification based on usr_probability
+            if usr_probability <= 25:
+                classification = "Safe Zone"
+                dos_and_donts = [
+                    "Maintain a healthy diet with a balance of nutrients.",
+                    "Engage in regular physical activity.",
+                    "Get sufficient sleep each night.",
+                    "Manage stress through relaxation techniques."
+                    # Add more tips for this range
+                ]
+            elif 25 < usr_probability <= 50:
+                classification = "Moderate Risk"
+                dos_and_donts = [
+                    "Consult with a healthcare professional for a thorough evaluation.",
+                    "Monitor blood pressure and cholesterol levels regularly.",
+                    "Follow a heart-healthy diet with reduced salt and saturated fats.",
+                    "Engage in moderate-intensity exercise regularly."
+                    # Add more tips for this range
+                ]
+            elif 50 < usr_probability <= 75:
+                classification = "High Risk"
+                dos_and_donts = [
+                    "Seek immediate medical attention and consult with a cardiologist.",
+                    "Adhere to prescribed medications and treatment plans.",
+                    "Monitor blood pressure, cholesterol, and glucose levels regularly.",
+                    "Make necessary lifestyle changes to reduce risk factors."
+                    # Add more tips for this range
+                ]
+            else:
+                classification = "Very High Risk"
+                dos_and_donts = [
+                    "Urgently consult with a cardiologist for further evaluation.",
+                    "Undergo necessary diagnostic tests and procedures.",
+                    "Adhere strictly to prescribed medications and treatment plans.",
+                    "Consider lifestyle modifications and follow medical advice."
+                    # Add more tips for this range
+                ]
 
 
 
-        return render_template('result.html', prediction =prediction,usr_probability=usr_probability)
+
+        return render_template('result.html', user_input=user_input,prediction =prediction,usr_probability=usr_probability,deviations_dict=deviations_dict,classification=classification,
+                               dos_and_donts=dos_and_donts)
 
     return "Method not allowed"
 
