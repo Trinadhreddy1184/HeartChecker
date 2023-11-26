@@ -85,8 +85,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
+
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="openDashboard()">Dashboard</a>
+                    <form  method="post" action="/dashboard" id="dashboardForm">
+                        <a class="nav-link" style="display:inline;"  onclick="openDashboard()">Dashboard</a></form>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"  onclick="openAboutModal()">About</a>
@@ -153,10 +155,27 @@
 
     <script>
     function openDashboard() {
-        document.getElementById('dashboardModal').style.display = 'block';
-        document.getElementById('dashboardIframe').src = '{{ url_for("static", filename="dashboard.html") }}';
-        document.body.classList.add('inactive');
+        var form = document.getElementById("dashboardForm");
+            var formData = new FormData(form);
+
+    $.ajax({
+        type: 'POST',
+        url: '/dashboard',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            document.getElementById('dashboardModal').style.display = 'block';
+            document.getElementById('dashboardIframe').srcdoc = data;  // Set the result directly
+            document.body.classList.add('inactive');
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
     }
+
+
 
     function openAboutModal() {
         document.getElementById('aboutModal').style.display = 'block';

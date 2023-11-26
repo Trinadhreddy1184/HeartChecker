@@ -2,6 +2,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 from sklearn.model_selection import train_test_split
 import pandas as pd
+import plotly.express as px
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+from sklearn.metrics import confusion_matrix, roc_curve, auc, accuracy_score
 import base64
 from io import BytesIO
 # import shap
@@ -24,27 +28,131 @@ def checkyourheart():
 
     return render_template('checkyourheart.html')
 #
-# @app.route('/dashboard')
-# def dashboard():
-#     global ml_instance  # Define ml_instance in the scope of the function
-#
-#     # Process data for the dashboard and interact with the MLManager class
-#     features_test = ml_instance.df.drop('target', axis=1)
-#     target_test = ml_instance.df['target']
-#     X_train, X_test, y_train, y_test = train_test_split(features_test, target_test, test_size=0.2,
-#                                                         random_state=10)
-#     predictions = ml_instance.predict(X_test)
-#     probability = ml_instance.predict_proba(X_test)
-#
-#     # Visualize results
-#     # # img = BytesIO()
-#     # # explainer = shap.TreeExplainer(ml_instance.model)
-#     # # shap_values = explainer.shap_values(X_test)
-#     # # shap.summary_plot(shap_values[1], X_test)
-#     # # plt.savefig(img, format='png')
-#     # img_str = "data:image/png;base64," + base64.b64encode(img.getvalue()).decode()
-#     #
-#     # return render_template('dashboard.html', img_str=img_str)
+@app.route('/dashboard', methods=['GET', 'POST'])
+def dashboard():
+    global ml_instance  # Define ml_instance in the scope of the function
+
+    # Process data for the dashboard and interact with the MLManager class
+    features_test = ml_instance.df.drop('target', axis=1)
+    target_test = ml_instance.df['target']
+    X_train, X_test, y_train, y_test = train_test_split(features_test, target_test, test_size=0.2, random_state=100)
+    predictions = ml_instance.predict(X_test)
+    probability = ml_instance.predict_proba(X_test)
+
+    accuracy = float(format(accuracy_score(y_test, predictions) * 100, ".2f"))
+    cm = confusion_matrix(y_test, predictions)
+
+    y_pred_quant = ml_instance.model.predict_proba(X_test)[:, 1]
+    y_pred_bin = np.where(y_pred_quant > 0.5, 1, 0)
+
+    # Calculate confusion matrix
+    conf_matrix = confusion_matrix(y_test, y_pred_bin)
+
+    # Calculate sensitivity and specificity
+    sensitivity = conf_matrix[0, 0] / (conf_matrix[0, 0] + conf_matrix[1, 0])
+    specificity = conf_matrix[1, 1] / (conf_matrix[1, 1] + conf_matrix[0, 1])
+
+    # Plot ROC curve
+    fpr, tpr, thresholds = roc_curve(y_test, y_pred_quant)
+    roc_auc = auc(fpr, tpr)
+
+    fpr = fpr.tolist()
+    tpr = tpr.tolist()
+    thresholds = thresholds.tolist()
+
+    # Visualizations
+
+    # Gender Distribution
+    gender_distribution_fig = px.pie(ml_instance.df, names='sex', title='Gender Distribution')
+    gender_distribution_fig.update_traces(textinfo='percent+label')
+    gender_distribution_fig.write_html('templates/gender_distribution.html')
+
+    # Age Distribution
+    age_distribution_fig = px.histogram(ml_instance.df, x='age', nbins=20, title='Age Distribution')
+    age_distribution_fig.update_layout(xaxis_title='Age', yaxis_title='Count')
+    age_distribution_fig.write_html('templates/age_distribution.html')
+
+    # Chest Pain Type vs. Heart Disease
+    chest_pain_vs_heart_disease_fig = px.bar(ml_instance.df, x='cp', color='target',
+                                             labels={'cp': 'Chest Pain Type', 'target': 'Heart Disease'},
+                                             title='Chest Pain Type vs. Heart Disease')
+    chest_pain_vs_heart_disease_fig.update_layout(xaxis_title='Chest Pain Type', yaxis_title='Count')
+    chest_pain_vs_heart_disease_fig.write_html('templates/chest_pain_vs_heart_disease.html')
+
+    # Resting Blood Pressure vs. Heart Disease
+    resting_bp_vs_heart_disease_fig = px.box(ml_instance.df, x='target', y='trestbps', points='all',
+                                             labels={'target': 'Heart Disease', 'trestbps': 'Resting Blood Pressure'},
+                                             title='Resting Blood Pressure vs. Heart Disease')
+    resting_bp_vs_heart_disease_fig.update_layout(xaxis_title='Heart Disease', yaxis_title='Resting Blood Pressure')
+    resting_bp_vs_heart_disease_fig.write_html('templates/resting_bp_vs_heart_disease.html')
+
+    # Serum Cholesterol vs. Heart Disease
+    chol_vs_heart_disease_fig = px.box(ml_instance.df, x='target', y='chol', points='all',
+                                       labels={'target': 'Heart Disease', 'chol': 'Serum Cholesterol'},
+                                       title='Serum Cholesterol vs. Heart Disease')
+    chol_vs_heart_disease_fig.update_layout(xaxis_title='Heart Disease', yaxis_title='Serum Cholesterol')
+    chol_vs_heart_disease_fig.write_html('templates/chol_vs_heart_disease.html')
+
+    # Fasting Blood Sugar vs. Heart Disease
+    fbs_vs_heart_disease_fig = px.bar(ml_instance.df, x='fbs', color='target',
+                                       labels={'fbs': 'Fasting Blood Sugar', 'target': 'Heart Disease'},
+                                       title='Fasting Blood Sugar vs. Heart Disease')
+    fbs_vs_heart_disease_fig.update_layout(xaxis_title='Fasting Blood Sugar', yaxis_title='Count')
+    fbs_vs_heart_disease_fig.write_html('templates/fbs_vs_heart_disease.html')
+
+    # Resting Electrocardiographic Results vs. Heart Disease
+    restecg_vs_heart_disease_fig = px.bar(ml_instance.df, x='restecg', color='target',
+                                           labels={'restecg': 'Resting Electrocardiographic Results', 'target': 'Heart Disease'},
+                                           title='Resting Electrocardiographic Results vs. Heart Disease')
+    restecg_vs_heart_disease_fig.update_layout(xaxis_title='Resting Electrocardiographic Results', yaxis_title='Count')
+    restecg_vs_heart_disease_fig.write_html('templates/restecg_vs_heart_disease.html')
+
+    # Maximum Heart Rate Achieved vs. Heart Disease
+    thalach_vs_heart_disease_fig = px.box(ml_instance.df, x='target', y='thalach', points='all',
+                                           labels={'target': 'Heart Disease', 'thalach': 'Maximum Heart Rate Achieved'},
+                                           title='Maximum Heart Rate Achieved vs. Heart Disease')
+    thalach_vs_heart_disease_fig.update_layout(xaxis_title='Heart Disease', yaxis_title='Maximum Heart Rate Achieved')
+    thalach_vs_heart_disease_fig.write_html('templates/thalach_vs_heart_disease.html')
+
+    # Exercise Induced Angina vs. Heart Disease
+    exang_vs_heart_disease_fig = px.bar(ml_instance.df, x='exang', color='target',
+                                         labels={'exang': 'Exercise Induced Angina', 'target': 'Heart Disease'},
+                                         title='Exercise Induced Angina vs. Heart Disease')
+    exang_vs_heart_disease_fig.update_layout(xaxis_title='Exercise Induced Angina', yaxis_title='Count')
+    exang_vs_heart_disease_fig.write_html('templates/exang_vs_heart_disease.html')
+
+    # ST Depression Induced by Exercise Relative to Rest vs. Heart Disease
+    oldpeak_vs_heart_disease_fig = px.box(ml_instance.df, x='target', y='oldpeak', points='all',
+                                           labels={'target': 'Heart Disease', 'oldpeak': 'ST Depression Induced by Exercise Relative to Rest'},
+                                           title='ST Depression Induced by Exercise Relative to Rest vs. Heart Disease')
+    oldpeak_vs_heart_disease_fig.update_layout(xaxis_title='Heart Disease', yaxis_title='ST Depression Induced by Exercise Relative to Rest')
+    oldpeak_vs_heart_disease_fig.write_html('templates/oldpeak_vs_heart_disease.html')
+
+    # Slope of the Peak Exercise ST Segment vs. Heart Disease
+    slope_vs_heart_disease_fig = px.bar(ml_instance.df, x='slope', color='target',
+                                         labels={'slope': 'Slope of the Peak Exercise ST Segment', 'target': 'Heart Disease'},
+                                         title='Slope of the Peak Exercise ST Segment vs. Heart Disease')
+    slope_vs_heart_disease_fig.update_layout(xaxis_title='Slope of the Peak Exercise ST Segment', yaxis_title='Count')
+    slope_vs_heart_disease_fig.write_html('templates/slope_vs_heart_disease.html')
+
+    # Number of Major Vessels Colored by Fluoroscopy vs. Heart Disease
+    ca_vs_heart_disease_fig = px.bar(ml_instance.df, x='ca', color='target',
+                                       labels={'ca': 'Number of Major Vessels Colored by Fluoroscopy', 'target': 'Heart Disease'},
+                                       title='Number of Major Vessels Colored by Fluoroscopy vs. Heart Disease')
+    ca_vs_heart_disease_fig.update_layout(xaxis_title='Number of Major Vessels Colored by Fluoroscopy', yaxis_title='Count')
+    ca_vs_heart_disease_fig.write_html('templates/ca_vs_heart_disease.html')
+
+    # Thalassemia vs. Heart Disease
+    thal_vs_heart_disease_fig = px.bar(ml_instance.df, x='thal', color='target',
+                                         labels={'thal': 'Thalassemia', 'target': 'Heart Disease'},
+                                         title='Thalassemia vs. Heart Disease')
+    thal_vs_heart_disease_fig.update_layout(xaxis_title='Thalassemia', yaxis_title='Count')
+    thal_vs_heart_disease_fig.write_html('templates/thal_vs_heart_disease.html')
+
+    # Return render_template with necessary variables
+    return render_template('dashboard.html', accuracy=accuracy, cm=cm, fpr=fpr, tpr=tpr, thresholds=thresholds,
+                           roc_auc=roc_auc)
+
 @app.route('/result', methods=['POST'])
 def result():
     if request.method == 'POST':
