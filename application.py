@@ -1,4 +1,4 @@
-# File: app.py
+# File: application.py
 from flask import Flask, render_template, request, redirect, url_for
 from sklearn.model_selection import train_test_split
 import pandas as pd
