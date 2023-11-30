@@ -62,4 +62,49 @@ li:first-child {
     border-top: 1px solid #ddd;
 }
 
+
+
+        .progress-container {
+            width: 70%;
+            margin: auto;
+            border: 1px solid white
+        }
+
+        .progress-bar {
+            position: relative;
+            color: white;
+            top: -0.0em;
+            width: 100%
+        }
+
+        .comparison-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .comparison-card {
+            float: center;
+            margin: 5px;
+            padding: 5px;
+        }
+
+        .attribute-comparison-chart {
+            float: center;
+            width: 100%;
+            height: 250px;
+        }
+
+        .classification-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .card-header {
+            color: white;
+        }
+
+        .dos-and-donts {
+            text-align: left;
+        }
+
 /* Add more styling as needed */

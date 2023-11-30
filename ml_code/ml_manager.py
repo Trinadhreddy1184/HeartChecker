@@ -11,9 +11,10 @@ class MLManager:
     def __init__(self, data_path):
         self.model = None
         self.df, self.feature_names = self.preprocess_data(data_path)
-        self.normal_values = {'cp': 2, 'trestbps': 120, 'chol': 200, 'fbs': 0,
-                              'restecg': 1, 'thalach': 150, 'exang': 0, 'oldpeak': 0, 'slope': 1,
-                              'num_major_vessels': 0, 'thalassemia': 1}
+        # self.normal_values = {'cp': 2, 'trestbps': 120, 'chol': 200, 'fbs': 0,
+        #                       'restecg': 1, 'thalach': 150, 'exang': 0, 'oldpeak': 0, 'slope': 1,
+        #                       'num_major_vessels': 0, 'thal': 1}
+        self.normal_values = {'cp': 0, 'trestbps': 131, 'chol': 245, 'fbs': 0, 'restecg': 0, 'thalach': 149, 'exang': 0, 'oldpeak': 1, 'slope': 1, 'num_major_vessels': 0, 'thal': 2}
         self.train_model()
 
 
@@ -49,9 +50,4 @@ class MLManager:
         # Exclude the target variable if it exists in the input
         features_for_prediction = user_input_df.drop('target', axis=1, errors='ignore')
         return self.model.predict_proba(features_for_prediction)[:, 1]
-
-    def calculate_attribute_deviations(self, user_input):
-        deviations = {attribute: user_input.get(attribute, 0) - self.normal_values.get(attribute, 0)
-                      for attribute in set(user_input.keys()) & set(self.normal_values.keys())}
-        return deviations
 
