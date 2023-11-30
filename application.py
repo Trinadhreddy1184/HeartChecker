@@ -1,19 +1,11 @@
 # File: application.py
-from flask import Flask, render_template, request, redirect, url_for
-from sklearn.model_selection import train_test_split
+from flask import Flask, render_template, request
 import pandas as pd
-import plotly.express as px
-from sub_ml_manager import  SubMLManager
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-from sklearn.metrics import confusion_matrix, roc_curve, auc, accuracy_score
-import base64
-from io import BytesIO
+from ml_code.sub_ml_manager import  SubMLManager
 # import shap
 # import plotly as plt
 
 from ml_code.ml_manager import MLManager
-from ml_code.ml_visualizer import MLVisualizer
 import  numpy as np
 
 app = Flask(__name__)

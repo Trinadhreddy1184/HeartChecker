@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title >HeartChecker - Your Heart Health</title>
+    <title>HeartChecker - Your Heart Health</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -13,6 +13,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 
+    <style>
+        .invalid {
+            border: 1px solid red;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,10 +25,10 @@
     <div class="main-section">
         <div class="contact-form" id="contact">
             <h2 style="color:#e74d3c;">Check Your Heart's Health</h2>
-            <form method="post" action="/result" id="heartForm">
+            <form method="post" id="heartForm" onsubmit="return submitForm()">
                 <div class="form-group">
                     <label for="age">Age:</label>
-                    <input type="text" id="age" name="age" required>
+                    <input type="number" id="age" name="age" min="0" max="120" required oninput="validateInput(this)">
                 </div>
                 <div class="form-group">
                     <label for="sex">Sex:</label>
@@ -43,11 +48,11 @@
                 </div>
                 <div class="form-group">
                     <label for="trestbps">Resting Blood Pressure:</label>
-                    <input type="text" id="trestbps" name="trestbps" required>
+                    <input type="number" id="trestbps" name="trestbps" min="80" max="200" required oninput="validateInput(this)">
                 </div>
                 <div class="form-group">
                     <label for="chol">Serum Cholestoral (mg/dl):</label>
-                    <input type="text" id="chol" name="chol" required>
+                    <input type="number" id="chol" name="chol" min="50" max="600" required oninput="validateInput(this)">
                 </div>
                 <div class="form-group">
                     <label for="fbs">Fasting Blood Sugar (>120 mg/dl):</label>
@@ -66,7 +71,7 @@
                 </div>
                 <div class="form-group">
                     <label for="thalach">Maximum Heart Rate Achieved:</label>
-                    <input type="text" id="thalach" name="thalach" required>
+                    <input type="number" id="thalach" name="thalach" min="60" max="220" required oninput="validateInput(this)">
                 </div>
                 <div class="form-group">
                     <label for="exang">Exercise Induced Angina:</label>
@@ -77,7 +82,7 @@
                 </div>
                 <div class="form-group">
                     <label for="oldpeak">Oldpeak (ST Depression Induced by Exercise Relative to Rest):</label>
-                    <input type="text" id="oldpeak" name="oldpeak" required>
+                    <input type="number" id="oldpeak" name="oldpeak" min="0" max="6" step="0.1" required oninput="validateInput(this)">
                 </div>
                 <div class="form-group">
                     <label for="slope">Slope of the Peak Exercise ST Segment:</label>
@@ -89,7 +94,7 @@
                 </div>
                 <div class="form-group">
                     <label for="num_major_vessels">Number of Major Vessels (0-3) Colored by Flourosopy:</label>
-                    <input type="text" id="num_major_vessels" name="num_major_vessels" required>
+                    <input type="number" id="num_major_vessels" name="num_major_vessels" min="0" max="3" required oninput="validateInput(this)">
                 </div>
                 <div class="form-group">
                     <label for="thal">Thal:</label>
@@ -100,11 +105,12 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <button type="button" onclick="submitForm()">Submit</button>
+                    <button type="submit">Submit</button>
                 </div>
             </form>
         </div>
     </div>
+
     <!-- Modal Script -->
     <div id="resultModal" class="modal">
         <div class="modal-content">
@@ -114,25 +120,54 @@
     </div>
 
     <script>
-        function submitForm() {
-            var form = document.getElementById("heartForm");
-            var formData = new FormData(form);
-
-    $.ajax({
-        type: 'POST',
-        url: '/result',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            document.getElementById('resultModal').style.display = 'block';
-            document.getElementById('resultIframe').srcdoc = data;  // Set the result directly
-            document.body.classList.add('inactive');
-        },
-        error: function (error) {
-            console.log(error);
+        function validateInput(input) {
+            if (!input.checkValidity()) {
+                input.classList.add("invalid");
+            } else {
+                input.classList.remove("invalid");
+            }
         }
-    });
+
+        function validateForm() {
+            var form = document.getElementById("heartForm");
+            var isValid = true;
+
+            // Validate each input field
+            var inputs = form.querySelectorAll("input, select");
+            inputs.forEach(function (input) {
+                validateInput(input);
+                if (!input.checkValidity()) {
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+
+        function submitForm() {
+            if (validateForm()) {
+                // Your form submission logic
+                var form = document.getElementById("heartForm");
+                var formData = new FormData(form);
+                $.ajax({
+                    type: 'POST',
+                    url: '/result',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        document.getElementById('resultModal').style.display = 'block';
+                        document.getElementById('resultIframe').srcdoc = data;  // Set the result directly
+                        document.body.classList.add('inactive');
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+            // Prevent form submission
+            return false;
         }
 
         function openResult() {
