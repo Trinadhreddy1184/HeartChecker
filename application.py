@@ -1,4 +1,4 @@
-# File: app.py
+# File: application.py
 import json
 
 from flask import Flask, render_template, request
