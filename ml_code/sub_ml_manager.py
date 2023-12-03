@@ -54,8 +54,13 @@ class SubMLManager:
 
     def create_visualizations(self):
         # Gender Distribution
-        # Gender Distribution
-        visual_df=self.ml_instance.df
+        visual_df = self.ml_instance.df.copy()  # Make a copy to avoid modifying the original DataFrame
+
+        # Replace 'sex' values
+        visual_df['sex'] = visual_df['sex'].replace({1: 'Male', 0: 'Female'})
+
+        # Replace 'target' values
+        visual_df['target'] = visual_df['target'].replace({0: 'Not Effected', 1: 'Effected'})
 
         gender_distribution_fig = px.pie(visual_df, names='sex', title='Gender Distribution',
                                          labels={'sex': 'Gender'})
@@ -63,84 +68,86 @@ class SubMLManager:
         self.create_visualization(gender_distribution_fig, 'gender_distribution')
 
         # Age Distribution
-        age_distribution_fig = px.histogram(visual_df, x='age', nbins=30, title='Age Distribution')
+        age_distribution_fig = px.histogram(visual_df, x='age', nbins=30, title='Age Distribution',
+                                           color='target', labels={'age': 'Age', 'target': 'Heart Disease'},
+                                           facet_col='target', facet_col_wrap=2)
         age_distribution_fig.update_layout(xaxis_title='Age', yaxis_title='Count')
         self.create_visualization(age_distribution_fig, 'age_distribution')
 
         # Chest Pain Type Distribution
         cp_distribution_fig = px.histogram(visual_df, x='cp', color='target', nbins=30,
                                           labels={'cp': 'Chest Pain Type', 'target': 'Heart Disease'},
-                                          title='Chest Pain Type Distribution')
+                                          title='Chest Pain Type Distribution', facet_col='target', facet_col_wrap=2)
         cp_distribution_fig.update_layout(xaxis_title='Chest Pain Type', yaxis_title='Count')
         self.create_visualization(cp_distribution_fig, 'cp_distribution')
 
         # Resting Blood Pressure Distribution
         trestbps_distribution_fig = px.histogram(visual_df, x='trestbps', color='target', nbins=30,
                                                  labels={'trestbps': 'Resting Blood Pressure', 'target': 'Heart Disease'},
-                                                 title='Resting Blood Pressure Distribution')
+                                                 title='Resting Blood Pressure Distribution', facet_col='target', facet_col_wrap=2)
         trestbps_distribution_fig.update_layout(xaxis_title='Resting Blood Pressure', yaxis_title='Count')
         self.create_visualization(trestbps_distribution_fig, 'trestbps_distribution')
 
         # Serum Cholesterol Distribution
         chol_distribution_fig = px.histogram(visual_df, x='chol', color='target', nbins=30,
                                              labels={'chol': 'Serum Cholesterol', 'target': 'Heart Disease'},
-                                             title='Serum Cholesterol Distribution')
+                                             title='Serum Cholesterol Distribution', facet_col='target', facet_col_wrap=2)
         chol_distribution_fig.update_layout(xaxis_title='Serum Cholesterol', yaxis_title='Count')
         self.create_visualization(chol_distribution_fig, 'chol_distribution')
 
         # Fasting Blood Sugar Distribution
         fbs_distribution_fig = px.histogram(visual_df, x='fbs', color='target', nbins=30,
                                             labels={'fbs': 'Fasting Blood Sugar', 'target': 'Heart Disease'},
-                                            title='Fasting Blood Sugar Distribution')
+                                            title='Fasting Blood Sugar Distribution', facet_col='target', facet_col_wrap=2)
         fbs_distribution_fig.update_layout(xaxis_title='Fasting Blood Sugar', yaxis_title='Count')
         self.create_visualization(fbs_distribution_fig, 'fbs_distribution')
 
         # Resting Electrocardiographic Results Distribution
         restecg_distribution_fig = px.histogram(visual_df, x='restecg', color='target', nbins=30,
                                                 labels={'restecg': 'Resting Electrocardiographic Results', 'target': 'Heart Disease'},
-                                                title='Resting Electrocardiographic Results Distribution')
+                                                title='Resting Electrocardiographic Results Distribution', facet_col='target', facet_col_wrap=2)
         restecg_distribution_fig.update_layout(xaxis_title='Resting Electrocardiographic Results', yaxis_title='Count')
         self.create_visualization(restecg_distribution_fig, 'restecg_distribution')
 
         # Maximum Heart Rate Achieved Distribution
         thalach_distribution_fig = px.histogram(visual_df, x='thalach', color='target', nbins=30,
                                                 labels={'thalach': 'Maximum Heart Rate Achieved', 'target': 'Heart Disease'},
-                                                title='Maximum Heart Rate Achieved Distribution')
+                                                title='Maximum Heart Rate Achieved Distribution', facet_col='target', facet_col_wrap=2)
         thalach_distribution_fig.update_layout(xaxis_title='Maximum Heart Rate Achieved', yaxis_title='Count')
         self.create_visualization(thalach_distribution_fig, 'thalach_distribution')
 
         # Exercise Induced Angina Distribution
         exang_distribution_fig = px.histogram(visual_df, x='exang', color='target', nbins=30,
                                               labels={'exang': 'Exercise Induced Angina', 'target': 'Heart Disease'},
-                                              title='Exercise Induced Angina Distribution')
+                                              title='Exercise Induced Angina Distribution', facet_col='target', facet_col_wrap=2)
         exang_distribution_fig.update_layout(xaxis_title='Exercise Induced Angina', yaxis_title='Count')
         self.create_visualization(exang_distribution_fig, 'exang_distribution')
 
         # ST Depression Induced by Exercise Relative to Rest Distribution
         oldpeak_distribution_fig = px.histogram(visual_df, x='oldpeak', color='target', nbins=30,
                                                labels={'oldpeak': 'ST Depression Induced by Exercise Relative to Rest', 'target': 'Heart Disease'},
-                                               title='ST Depression Induced by Exercise Relative to Rest Distribution')
+                                               title='ST Depression Induced by Exercise Relative to Rest Distribution', facet_col='target', facet_col_wrap=2)
         oldpeak_distribution_fig.update_layout(xaxis_title='ST Depression Induced by Exercise Relative to Rest', yaxis_title='Count')
         self.create_visualization(oldpeak_distribution_fig, 'oldpeak_distribution')
 
         # Slope of the Peak Exercise ST Segment Distribution
         slope_distribution_fig = px.histogram(visual_df, x='slope', color='target', nbins=30,
                                               labels={'slope': 'Slope of the Peak Exercise ST Segment', 'target': 'Heart Disease'},
-                                              title='Slope of the Peak Exercise ST Segment Distribution')
+                                              title='Slope of the Peak Exercise ST Segment Distribution', facet_col='target', facet_col_wrap=2)
         slope_distribution_fig.update_layout(xaxis_title='Slope of the Peak Exercise ST Segment', yaxis_title='Count')
         self.create_visualization(slope_distribution_fig, 'slope_distribution')
 
         # Number of Major Vessels Colored by Fluoroscopy Distribution
         ca_distribution_fig = px.histogram(visual_df, x='ca', color='target', nbins=30,
                                            labels={'ca': 'Number of Major Vessels Colored by Fluoroscopy', 'target': 'Heart Disease'},
-                                           title='Number of Major Vessels Colored by Fluoroscopy Distribution')
+                                           title='Number of Major Vessels Colored by Fluoroscopy Distribution', facet_col='target', facet_col_wrap=2)
         ca_distribution_fig.update_layout(xaxis_title='Number of Major Vessels Colored by Fluoroscopy', yaxis_title='Count')
         self.create_visualization(ca_distribution_fig, 'ca_distribution')
 
         # Thalassemia Distribution
         thal_distribution_fig = px.histogram(visual_df, x='thal', color='target', nbins=30,
                                              labels={'thal': 'Thalassemia', 'target': 'Heart Disease'},
-                                             title='Thalassemia Distribution')
+                                             title='Thalassemia Distribution', facet_col='target', facet_col_wrap=2)
         thal_distribution_fig.update_layout(xaxis_title='Thalassemia', yaxis_title='Count')
         self.create_visualization(thal_distribution_fig, 'thal_distribution')
 
