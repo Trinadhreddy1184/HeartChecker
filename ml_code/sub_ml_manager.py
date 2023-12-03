@@ -152,6 +152,28 @@ class SubMLManager:
         self.create_visualization(thal_distribution_fig, 'thal_distribution')
 
         # Wait for all visualizations to complete
+        for fig, filename in [
+            (gender_distribution_fig, 'gender_distribution'),
+            (age_distribution_fig, 'age_distribution'),
+            (cp_distribution_fig, 'cp_distribution'),
+            (trestbps_distribution_fig, 'trestbps_distribution'),
+            (chol_distribution_fig, 'chol_distribution'),
+            (fbs_distribution_fig, 'fbs_distribution'),
+            (restecg_distribution_fig, 'restecg_distribution'),
+            (thalach_distribution_fig, 'thalach_distribution'),
+            (exang_distribution_fig, 'exang_distribution'),
+            (oldpeak_distribution_fig, 'oldpeak_distribution'),
+            (slope_distribution_fig, 'slope_distribution'),
+            (ca_distribution_fig, 'ca_distribution'),
+            (thal_distribution_fig, 'thal_distribution'),
+        ]:
+            # Update layout for responsiveness
+            fig.update_layout(autosize=True)
+
+            # Create visualization
+            self.create_visualization(fig, filename)
+
+            # Wait for all visualizations to complete
         with concurrent.futures.ThreadPoolExecutor() as executor:
             # Submit each visualization for parallel execution
             future_to_fig = {

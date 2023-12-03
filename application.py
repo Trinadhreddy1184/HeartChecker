@@ -61,6 +61,7 @@ def result():
             'target': None
         }
         user_input_array = np.array(list(user_input.values())).reshape(1, -1)
+        print(user_input_array)
 
         # Call the predict method with the numpy array
         prediction = int(ml_instance.predict(user_input_array)[0])
@@ -74,6 +75,31 @@ def result():
         for k, v in normal_values.items():
             user_values[k] = user_input[k]
         print(user_values)
+        gender_category= 'Male' if user_input['sex']==1 else 'Female'
+        age_category=''
+        if (user_input['age'] > 0 and user_input['age'] <=25):
+            age_category='0-25'
+        elif (user_input['age'] > 25 and user_input['age'] <= 50):
+            age_category='25-50'
+        elif (user_input['age'] > 50 and user_input['age'] <=75):
+            age_category='50-75'
+        else:
+            age_category_model = '75-120'
+        gender_category_model= ml_instance.male_model if user_input['sex']==1 else ml_instance.female_model
+        age_category_model=None
+        if (user_input['age'] > 0 and user_input['age'] <=25):
+            age_category_model=ml_instance.age1_model
+        elif (user_input['age'] > 25 and user_input['age'] <= 50):
+            age_category_model=ml_instance.age2_model
+        elif (user_input['age'] > 50 and user_input['age'] <=75):
+            age_category_model=ml_instance.age3_model
+        else:
+            age_category_model = ml_instance.age4_model
+
+        gender_usr_probability=_probability = float(format(float(ml_instance.predict_proba(user_input_array,gender_category_model)[0] * 100),".2f"))
+        age_usr_probability= float(format(float(ml_instance.predict_proba(user_input_array,age_category_model)[0] * 100),".2f"))
+
+
         if usr_probability <= 25:
             classification = "Safe Zone"
             dos_and_donts = [
@@ -115,7 +141,8 @@ def result():
 
 
         return render_template('result.html', user_input=user_input,prediction =prediction,usr_probability=usr_probability,user_values=user_values,normal_values=normal_values,classification=classification,
-                               dos_and_donts=dos_and_donts)
+                               dos_and_donts=dos_and_donts,gender_usr_probability=gender_usr_probability,
+                             age_usr_probability=age_usr_probability,age_category=age_category,gender_category=gender_category)
 
     return "Method not allowed"
 

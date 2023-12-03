@@ -15,84 +15,177 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='result.css') }}">
     <style>
 
+        .comparison-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .comparison-card {
+
+            margin: 10px;
+            padding: 5px;
+        }
+
+        .attribute-comparison-chart {
+            float: center;
+            width: 100%;
+            height: 250px;
+        }
+
+        .classification-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .card-header {
+            color: white;
+        }
+
+        .dos-and-donts {
+            text-align: left;
+        }
     </style>
 </head>
 
 <body>
 
 <div class="main-section">
-      <div class="result-container">
+    <div class="result-container">
         <h2>HeartChecker Result</h2>
         <p>Your results based on given info:</p>
         <ul>
             <li>
                 <strong>User Probability to have a heart disease:</strong>
                 <div class="progress-container">
-                    <div class="progress" style="width: 70%;height: 10%; margin: auto; border: 1px solid #ddd;">
+                    <div class="progress" >
                         <div class="progress-bar " role="progressbar" style="width: {{ usr_probability }}%;background-color: {% if usr_probability <= 25 %} #e7bc3c; /* Light Yellow */
                       {% elif usr_probability <= 50 %} #e7833c; /* Light Orange */
                       {% elif usr_probability <= 75 %} #e7613c; /* Tomato Orange */
                       {% else %} #e73c3c; /* Danger Red */
                       {% endif %};"
                              aria-valuenow="{{ usr_probability }}" aria-valuemin="0" aria-valuemax="100">
-                            <strong style="color: white; position: relative; top: -0.0em;">{{ usr_probability }}%</strong>
+                            <strong style="position: relative;">{{ usr_probability }}%</strong>
                         </div>
                     </div>
                 </div>
             </li>
-            <li > <h4 style="color: {% if prediction == 0 %} #3ce73f {% else %} #e7503c {% endif %}"> {% if prediction == 0 %} Not Effected {% else %} Effected {% endif %}</h4></li>
+            <li><h4 style="color: {% if prediction == 0 %} #3ce73f {% else %} #e7503c {% endif %}">
+                    {% if prediction == 0 %} Not Effected {% else %} Effected {% endif %}</h4></li>
         </ul>
     </div>
 
     <!-- Subplots for attribute comparisons -->
-    <h2>Attribute deviations comparison:</h2>
-    <div class="row row-cols-1 row-cols-md-3 comparison-container">
+ <h3>Attribute deviations comparison:</h3>
+<div class="row row-cols-1 row-cols-md-3 comparison-container">
 
-        {% for attribute in normal_values %}
-            <div class="col">
-                <div class="card comparison-card">
-                    <div class="card-body">
-                        <div id="{{ attribute }}-comparison-chart" class="attribute-comparison-chart"></div>
-                    </div>
+    {% for attribute in normal_values %}
+        <div class="col">
+            <div class="card comparison-card">
+                <div class="card-body">
+                    <div id="{{ attribute }}-comparison-chart" class="attribute-comparison-chart"></div>
                 </div>
-
-                <script>
-                    // Extract normal and user values for the current attribute
-                    var normalValue = {{ normal_values[attribute] }};
-                    var userValue = {{ user_values[attribute] }};
-
-                    // Create traces for the comparison chart
-                    var traces = [{
-                        x: ['Normal'],
-                        y: [normalValue],
-                        type: 'bar',
-                        name: 'Normal',
-                        marker: {color: 'blue'}
-                    },
-                    {
-                        x: ['User'],
-                        y: [userValue],
-                        type: 'bar',
-                        name: 'User',
-                        marker: {color: 'red'}
-                    }];
-
-                    // Layout for the comparison chart
-                    var layout = {
-                        title: '{{ attribute }} Comparison',
-                        yaxis: {
-                            title: '{{ attribute }} Value'
-                        }
-                    };
-
-                    // Plot the comparison chart
-                    Plotly.newPlot('{{ attribute }}-comparison-chart', traces, layout);
-                </script>
             </div>
-        {% endfor %}
-    </div>
+
+            <script>
+                // Extract normal and user values for the current attribute
+                var normalValue = {{ normal_values[attribute] }};
+                var userValue = {{ user_values[attribute] }};
+
+                // Create traces for the comparison chart
+                var traces = [{
+                    x: ['Normal'],
+                    y: [normalValue],
+                    type: 'bar',
+                    marker: {color: 'blue'},
+                    width: 0.3  // Adjust bar width
+                },
+                {
+                    x: ['User'],
+                    y: [userValue],
+                    type: 'bar',
+                    marker: {color: 'red'},
+                    width: 0.3 // Adjust bar width
+                }];
+
+                // Layout for the comparison chart
+                var layout = {
+                    title: {
+                        text: '{{ attribute }} Comparison',
+                        font: {
+                            size: 16
+                        },
+                        color : '#e7613c',
+                        automargin: true,
+                    },
+                    automargin: true,
+                    yaxis: {
+                        title: '{{ attribute }} Value',
+                        automargin: true
+                    },
+                    xaxis: {
+                        tickangle: -45,
+                        automargin: true,
+                    },
+                    margin: {
+                        t: 30,  // Top margin
+                        l: 30,  // Left margin
+                        r: 30,  // Right margin
+                        b: 60   // Bottom margin
+                    },
+                    barmode: 'group',  // Place bars next to each other
+                    showlegend: false  // Hide legend
+                };
+
+                // Plot the comparison chart
+                Plotly.newPlot('{{ attribute }}-comparison-chart', traces, layout, {responsive: true});
+            </script>
+        </div>
+    {% endfor %}
 </div>
 
+</div>
+
+<div class="main-section">
+    <h3>User's probability based on User Category</h3>
+    <div class="result-container">
+        <ul>
+            <li>
+                <strong>User Probability to have a heart disease based on Same Gender : {{ gender_category }} Category:</strong>
+                <div class="progress-container">
+                    <div class="progress" >
+                        <div class="progress-bar " role="progressbar" style="width: {{ gender_usr_probability }}%;background-color: {% if gender_usr_probability <= 25 %} #e7bc3c; /* Light Yellow */
+                      {% elif gender_usr_probability <= 50 %} #e7833c; /* Light Orange */
+                      {% elif gender_usr_probability <= 75 %} #e7613c; /* Tomato Orange */
+                      {% else %} #e73c3c; /* Danger Red */
+                      {% endif %};"
+                             aria-valuenow="{{ gender_usr_probability }}" aria-valuemin="0" aria-valuemax="100">
+                            <strong style="position: relative;">{{ gender_usr_probability }}%</strong>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="result-container">
+        <ul>
+            <li>
+                <strong>User Probability to have a heart disease based on Same Age : {{ age_category }} Category:</strong>
+                <div class="progress-container">
+                    <div class="progress" >
+                        <div class="progress-bar " role="progressbar" style="width: {{ age_usr_probability }}%;background-color: {% if age_usr_probability <= 25 %} #e7bc3c; /* Light Yellow */
+                      {% elif age_usr_probability <= 50 %} #e7833c; /* Light Orange */
+                      {% elif age_usr_probability <= 75 %} #e7613c; /* Tomato Orange */
+                      {% else %} #e73c3c; /* Danger Red */
+                      {% endif %};"
+                             aria-valuenow="{{ age_usr_probability }}" aria-valuemin="0" aria-valuemax="100">
+                            <strong style="position: relative;">{{ age_usr_probability }}%</strong>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
 <div class="classification-section card">
     <div class="card-header" style="background-color: {% if usr_probability <= 25 %} #e7bc3c; /* Light Yellow */
                       {% elif usr_probability <= 50 %} #e7833c; /* Light Orange */
@@ -103,7 +196,7 @@
         <h4 class="card-title" style="color:#e74d3c;">Do's and Don'ts:</h4>
         <ul class="list-group list-group-flush">
             {% for item in dos_and_donts %}
-                <li class="list-group-item">{{ item }}</li>
+                <li class="list-group-item">-> {{ item }}</li>
             {% endfor %}
         </ul>
     </div>

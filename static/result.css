@@ -65,13 +65,14 @@ li:first-child {
 
 
         .progress-container {
+            float: center;
             width: 70%;
             margin: auto;
             border: 1px solid white
         }
 
         .progress-bar {
-            position: relative;
+        float:center;
             color: white;
             top: -0.0em;
             width: 100%
@@ -79,7 +80,7 @@ li:first-child {
 
         .comparison-container {
             text-align: center;
-            margin-top: 20px;
+            margin-top: auto;
         }
 
         .comparison-card {
@@ -101,6 +102,7 @@ li:first-child {
 
         .card-header {
             color: white;
+            margin : 10px;
         }
 
         .dos-and-donts {

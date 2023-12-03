@@ -182,24 +182,25 @@
     }
 
     function openContact() {
-        var form = document.getElementById("contactForm");
-            var formData = new FormData(form);
+<!--        var form = document.getElementById("contactForm");-->
+<!--            var formData = new FormData(form);-->
 
-    $.ajax({
-        type: 'POST',
-        url: '/contact',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            document.getElementById('contactModal').style.display = 'block';
-            document.getElementById('contactIframe').srcdoc = data;  // Set the result directly
-            document.body.classList.add('inactive');
-        },
-        error: function (error) {
-            console.log(error);
-        }
-    });
+<!--    $.ajax({-->
+<!--        type: 'POST',-->
+<!--        url: '/contact',-->
+<!--        data: formData,-->
+<!--        contentType: false,-->
+<!--        processData: false,-->
+<!--        success: function (data) {-->
+<!--            document.getElementById('contactModal').style.display = 'block';-->
+<!--            document.getElementById('contactIframe').srcdoc = data;  // Set the result directly-->
+<!--            document.body.classList.add('inactive');-->
+<!--        },-->
+<!--        error: function (error) {-->
+<!--            console.log(error);-->
+<!--        }-->
+<!--    });-->
+        alert(' We got your query! Stay updated for latest version.')
     }
 
     function openAboutModal() {
