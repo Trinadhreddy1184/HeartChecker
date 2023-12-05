@@ -3,7 +3,6 @@ import plotly.express as px
 import numpy as np
 from sklearn.metrics import confusion_matrix, roc_curve, auc, accuracy_score
 import pandas as pd
-from io import BytesIO
 
 from sklearn.model_selection import train_test_split
 
@@ -50,11 +49,18 @@ class SubMLManager:
         }
 
     def create_visualization(self, fig, filename):
+        # Hide the modebar
+        fig.update_layout(showlegend=False)
+
+        # Make it responsive
+        fig.update_layout(autosize=True, margin=dict(l=0, r=0, b=0, t=0))
+
+        # Save visualization
         fig.write_html(f'templates/{filename}.html')
 
     def create_visualizations(self):
         # Gender Distribution
-        visual_df = self.ml_instance.df.copy()  # Make a copy to avoid modifying the original DataFrame
+        visual_df = self.ml_instance.df.copy()
 
         # Replace 'sex' values
         visual_df['sex'] = visual_df['sex'].replace({1: 'Male', 0: 'Female'})
@@ -62,15 +68,16 @@ class SubMLManager:
         # Replace 'target' values
         visual_df['target'] = visual_df['target'].replace({0: 'Not Effected', 1: 'Effected'})
 
-        gender_distribution_fig = px.pie(visual_df, names='sex', title='Gender Distribution',
-                                         labels={'sex': 'Gender'})
+        gender_distribution_fig = px.pie(visual_df, names='sex', title='Gender Distribution', labels={'sex': 'Gender'})
         gender_distribution_fig.update_traces(textinfo='percent+label')
         self.create_visualization(gender_distribution_fig, 'gender_distribution')
 
         # Age Distribution
-        age_distribution_fig = px.histogram(visual_df, x='age', nbins=30, title='Age Distribution',
-                                           color='target', labels={'age': 'Age', 'target': 'Heart Disease'},
-                                           facet_col='target', facet_col_wrap=2)
+        age_distribution_fig = px.histogram(
+            visual_df, x='age', nbins=30, title='Age Distribution',
+            color='target', labels={'age': 'Age', 'target': 'Heart Disease'},
+            facet_col='target', facet_col_wrap=2
+        )
         age_distribution_fig.update_layout(xaxis_title='Age', yaxis_title='Count')
         self.create_visualization(age_distribution_fig, 'age_distribution')
 
@@ -152,32 +159,10 @@ class SubMLManager:
         self.create_visualization(thal_distribution_fig, 'thal_distribution')
 
         # Wait for all visualizations to complete
-        for fig, filename in [
-            (gender_distribution_fig, 'gender_distribution'),
-            (age_distribution_fig, 'age_distribution'),
-            (cp_distribution_fig, 'cp_distribution'),
-            (trestbps_distribution_fig, 'trestbps_distribution'),
-            (chol_distribution_fig, 'chol_distribution'),
-            (fbs_distribution_fig, 'fbs_distribution'),
-            (restecg_distribution_fig, 'restecg_distribution'),
-            (thalach_distribution_fig, 'thalach_distribution'),
-            (exang_distribution_fig, 'exang_distribution'),
-            (oldpeak_distribution_fig, 'oldpeak_distribution'),
-            (slope_distribution_fig, 'slope_distribution'),
-            (ca_distribution_fig, 'ca_distribution'),
-            (thal_distribution_fig, 'thal_distribution'),
-        ]:
-            # Update layout for responsiveness
-            fig.update_layout(autosize=True)
-
-            # Create visualization
-            self.create_visualization(fig, filename)
-
-            # Wait for all visualizations to complete
         with concurrent.futures.ThreadPoolExecutor() as executor:
             # Submit each visualization for parallel execution
             future_to_fig = {
-                executor.submit(self.create_visualization, fig, filename): filename
+                executor.submit(self.create_visualization, fig, filename): (fig, filename)
                 for fig, filename in [
                     (gender_distribution_fig, 'gender_distribution'),
                     (age_distribution_fig, 'age_distribution'),
@@ -189,7 +174,7 @@ class SubMLManager:
                     (thalach_distribution_fig, 'thalach_distribution'),
                     (exang_distribution_fig, 'exang_distribution'),
                     (oldpeak_distribution_fig, 'oldpeak_distribution'),
-                    (slope_distribution_fig, 'slope_distribution'),
+                    (slope_distribution_fig,'slope_distribution'),
                     (ca_distribution_fig, 'ca_distribution'),
                     (thal_distribution_fig, 'thal_distribution'),
                 ]

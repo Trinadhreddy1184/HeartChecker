@@ -180,27 +180,67 @@
                 Plotly.newPlot('roc-curve', [trace1], layout1,{responsive: true});
             </script>
         </div>
+
         <div class="visualization">
-            <div id="other-visalizations"></div>
-            <h2>Dataset related visualizations</h2>
+            <h2>Dataset related Visualizations</h2>
+        <div class="visualization">
+            <h3> Gender Distribution</h3>
+
      <!-- Include other visualizations here -->
         {% include 'gender_distribution.html' %}
+        </div>
+     <div class="visualization">
+        <h3> Age Distribution</h3>
     {% include 'age_distribution.html' %}
+     </div>
+        <div class="visualization">
+         <h3>Chest pain Distribution vs Heart disease</h3>
     {% include 'cp_distribution.html' %}
+             </div>
+            <div class="visualization">
+                <h3>Resting Blood Pressure Distribution vs Heart disease</h3>
     {% include 'trestbps_distribution.html' %}
+                 </div>
+    <div class="visualization">
+        <h3>Serum Cholestrol Distribution vs Heart disease</h3>
     {% include 'chol_distribution.html' %}
+         </div>
+    <div class="visualization">
+        <h3>Fasting Blood Sugar Distribution vs Heart disease</h3>
     {% include 'fbs_distribution.html' %}
+         </div>
+    <div class="visualization">
+        <h3>Resting Electrocardiographic results Distribution vs Heart disease</h3>
     {% include 'restecg_distribution.html' %}
+         </div>
+     <div class="visualization">
+         <h3 > Maximum heart rate Distribution vs Heart disease</h3>
     {% include 'thalach_distribution.html' %}
+          </div>
+    <div class="visualization">
+        <h3>Exercise induced Angina Distribution vs Heart disease</h3>
     {% include 'exang_distribution.html' %}
+         </div>
+    <div class="visualization">
+        <h3> Oldpeak Distribution vs Heart disease</h3>
     {% include 'oldpeak_distribution.html' %}
+         </div>
+    <div class="visualization">
+        <h3>Slope of the peak exercise ST segment Distribution vs Heart disease</h3>
     {% include 'slope_distribution.html' %}
+         </div>
+    <div class="visualization">
+        <h3> Number of major vessels Distribution vs Heart disease</h3>
     {% include 'ca_distribution.html' %}
+         </div>
+    <div class="visualization">
+        <h3>Thalassemia Distribution vs Heart disease</h3>
     {% include 'thal_distribution.html' %}
 
 </div>
-
+        </div>
     </div>
+
 
 </body>
 </html>
