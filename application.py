@@ -13,8 +13,9 @@ import  numpy as np
 application = Flask(__name__)
 
 # Load and preprocess the dataset
-ml_instance = MLManager("static/heart.csv")
+ml_instance = MLManager("https://heartcheckerdev.s3.amazonaws.com/heart.csv")
 sub_ml_manager = SubMLManager(ml_instance)
+dashboard_data = sub_ml_manager.get_dashboard_data()
 
 @application.route('/', methods=['GET', 'POST'])
 def index():
@@ -35,7 +36,6 @@ def dashboard():
     global ml_instance
 
     # Get the dashboard data
-    dashboard_data = sub_ml_manager.get_dashboard_data()
 
     # Pass the dashboard data to the template
     return render_template('dashboard.html', **dashboard_data)

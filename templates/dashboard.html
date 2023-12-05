@@ -1,6 +1,7 @@
 <!-- File: dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,111 +12,112 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
     <style>
-    /* Add your custom styles here */
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 15px;
-        background-color: #f8f9fa;
-    }
+        /* Add your custom styles here */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 15px;
+            background-color: #f8f9fa;
+        }
 
-    nav {
-        border-radius: 30px;
-        padding: 10px;
-        text-align: left;
-        position: relative;
-        width: 100%;
-        background-color: #e74c3c;
-        z-index: 1000;
-    }
+        nav {
+            border-radius: 30px;
+            padding: 10px;
+            text-align: left;
+            position: relative;
+            width: 100%;
+            background-color: #e74c3c;
+            z-index: 1000;
+        }
 
-    nav a {
-        text-decoration: none;
-        margin: 0 15px;
-        font-weight: bold;
-        color: white;
-    }
+        nav a {
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            color: white;
+        }
 
-    .main-section {
-        position: relative;
-        padding: 20px;
-        box-shadow: 10px 10px 10px 10px #000000;
-        border-radius: 5px;
-        margin: 0px;
-        margin-top: 10px;
-        z-index: 1;
-    }
+        .main-section {
+            position: relative;
+            padding: 20px;
+            box-shadow: 10px 10px 10px 10px #000000;
+            border-radius: 5px;
+            margin: 0px;
+            margin-top: 10px;
+            z-index: 1;
+        }
 
-    .visualization {
-        background-color: white;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px 0px #000000;
-    }
-
-    .visualization h2 {
-        margin-bottom: 15px;
-        color: #e74c3c;
-    }
-
-    /* Progress bar style */
-    .progress {
-        height: 30px;
-        border-radius: 5px;
-        overflow: hidden;
-    }
-
-    .progress-bar {
-        text-align: center;
-        line-height: 30px;
-        color: #fff;
-    }
-
-    /* Confusion matrix style */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-    }
-
-    th {
-        background-color: #e74c3c;
-        color: white;
-    }
-
-    /* Responsive styles */
-    @media (max-width: 768px) {
         .visualization {
-            padding: 15px;
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px #000000;
         }
 
+        .visualization h2 {
+            margin-bottom: 15px;
+            color: #e74c3c;
+        }
+
+        /* Progress bar style */
+        .progress {
+            height: 30px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            text-align: center;
+            line-height: 30px;
+            color: #fff;
+        }
+
+        /* Confusion matrix style */
         table {
-            font-size: 14px;
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
         }
-    }
 
-    /* Set a fixed height for the graphs */
-    .visualization #roc-curve,
-    .visualization .gender-distribution-chart,
-    .visualization .age-distribution-chart,
-    .visualization .other-visalizations,
-    /* Add selectors for other charts */
-    {
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
-        white-space: nowrap;
-    }
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
 
-</style>
+        th {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .visualization {
+                padding: 15px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+        }
+
+        /* Set a fixed height for the graphs */
+        .visualization #roc-curve,
+        .visualization .gender-distribution-chart,
+        .visualization .age-distribution-chart,
+        .visualization .other-visualizations,
+        /* Add selectors for other charts */
+        {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+        }
+    </style>
 
 </head>
+
 <body>
 
     <div class="main-section">
@@ -177,30 +179,112 @@
                     }
                 };
 
-                Plotly.newPlot('roc-curve', [trace1], layout1,{responsive: true});
+                Plotly.newPlot('roc-curve', [trace1], layout1, { responsive: true });
             </script>
         </div>
-        <div class="visualization">
-            <div id="other-visalizations"></div>
-            <h2>Dataset related visualizations</h2>
-     <!-- Include other visualizations here -->
-        {% include 'gender_distribution.html' %}
-    {% include 'age_distribution.html' %}
-    {% include 'cp_distribution.html' %}
-    {% include 'trestbps_distribution.html' %}
-    {% include 'chol_distribution.html' %}
-    {% include 'fbs_distribution.html' %}
-    {% include 'restecg_distribution.html' %}
-    {% include 'thalach_distribution.html' %}
-    {% include 'exang_distribution.html' %}
-    {% include 'oldpeak_distribution.html' %}
-    {% include 'slope_distribution.html' %}
-    {% include 'ca_distribution.html' %}
-    {% include 'thal_distribution.html' %}
 
-</div>
+        <!-- Dataset related Visualizations -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Gender Distribution</h3>
+                    {% include 'gender_distribution.html' %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Age Distribution</h3>
+                    {% include 'age_distribution.html' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Chest Pain Distribution vs Heart Disease</h3>
+                    {% include 'cp_distribution.html' %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Resting Blood Pressure Distribution vs Heart Disease</h3>
+                    {% include 'trestbps_distribution.html' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Serum Cholesterol Distribution vs Heart Disease</h3>
+                    {% include 'chol_distribution.html' %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Fasting Blood Sugar Distribution vs Heart Disease</h3>
+                    {% include 'fbs_distribution.html' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Resting Electrocardiographic Results Distribution vs Heart Disease</h3>
+                    {% include 'restecg_distribution.html' %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Maximum Heart Rate Distribution vs Heart Disease</h3>
+                    {% include 'thalach_distribution.html' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Exercise Induced Angina Distribution vs Heart Disease</h3>
+                    {% include 'exang_distribution.html' %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Oldpeak Distribution vs Heart Disease</h3>
+                    {% include 'oldpeak_distribution.html' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Slope of the Peak Exercise ST Segment Distribution vs Heart Disease</h3>
+                    {% include 'slope_distribution.html' %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Number of Major Vessels Distribution vs Heart Disease</h3>
+                    {% include 'ca_distribution.html' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="visualization">
+                    <h3>Thalassemia Distribution vs Heart Disease</h3>
+                    {% include 'thal_distribution.html' %}
+                </div>
+            </div>
+        </div>
 
     </div>
 
 </body>
+
 </html>

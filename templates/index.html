@@ -117,7 +117,7 @@
 
         <div class="contact-form" id="contact" >
             <h2>Contact Us</h2>
-            <form id="contactForm" method="post">
+            <form id="contactForm" method="post" onsubmit="openContact()">
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
@@ -127,7 +127,7 @@
                     <textarea id="query" name="query" rows="4" required></textarea>
                 </div>
                 <div class="form-group">
-                    <button onclick="openContact()">Submit</button>
+                    <button type="submit">Submit</button>
                 </div>
             </form>
         </div>
