@@ -38,7 +38,7 @@ def dashboard():
     # Get the dashboard data
 
     # Pass the dashboard data to the template
-    return render_template('dashboard.html', **dashboard_data)
+    return render_template('dashboard.html', **dashboard_data,loading=True)
 
 @application.route('/result', methods=['POST'])
 def result():
